@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>寺地祐太・取扱説明書｜3AI統合版</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#FFF8E7;font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif;color:#333;}
+button{font-family:inherit;cursor:pointer;}
+.hero{background:linear-gradient(135deg,#1a1a2e 0%,#2d2d4e 100%);position:relative;overflow:hidden;}
+.hero-inner{max-width:1200px;margin:0 auto;padding:40px 32px 36px;position:relative;}
+.deco{position:absolute;border-radius:50%;background:rgba(212,168,67,0.12);pointer-events:none;}
+@media(min-width:960px){
+  .body-grid{display:grid;grid-template-columns:1fr minmax(0,620px) 280px 1fr;background:#FFF8E7;}
+  .col-left{grid-column:1/2;}.col-main{grid-column:2/3;padding:32px 24px 80px;}
+  .col-side{grid-column:3/4;padding:32px 20px 80px;}.col-right{grid-column:4/5;}
+  .bottom-tabs{display:none!important;}
+}
+@media(max-width:959px){
+  .body-grid{display:block;background:#FFF8E7;}
+  .col-left,.col-right,.col-side{display:none;}
+  .col-main{padding:20px 16px 90px;}
+  .bottom-tabs{display:flex!important;}
+  .hero-inner{padding:28px 20px 28px;}
+}
+.nav-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-radius:14px;margin-bottom:8px;background:#fff;border:2px solid #eee;cursor:pointer;transition:all 0.15s;}
+.nav-item:hover{border-color:#ddd;background:#fafafa;}
+.card{background:#fff;border-radius:16px;border:2px solid #eee;overflow:hidden;margin-bottom:16px;}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fi 0.2s ease;}
+.bottom-tabs{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;overflow-x:auto;padding:0 2px;z-index:100;box-shadow:0 -2px 16px rgba(0,0,0,0.07);}
+.tab-btn{flex-shrink:0;flex:1;min-width:52px;padding:9px 6px 7px;border:none;border-top:3px solid transparent;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="deco" style="width:300px;height:300px;top:-100px;right:-80px;"></div>
+  <div class="deco" style="width:160px;height:160px;bottom:-40px;left:60px;"></div>
+  <div class="hero-inner">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+      <span style="display:inline-block;font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;color:#D4A843;background:#D4A84320;border:1.5px solid #D4A843;">Gemini式：物語</span>
+      <span style="display:inline-block;font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;color:#4ECDC4;background:#4ECDC420;border:1.5px solid #4ECDC4;">ChatGPT式：構造</span>
+      <span style="display:inline-block;font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;color:#B07EC8;background:#B07EC820;border:1.5px solid #B07EC8;">Claude式：洞察</span>
+    </div>
+    <p style="margin:0 0 8px;font-size:11px;letter-spacing:5px;color:rgba(255,255,255,0.85);font-weight:700;">UNIFIED EDITION — TEAM MEMBER MANUAL</p>
+    <h1 style="margin:0 0 14px;line-height:1.05;">
+      <span style="display:block;font-size:20px;color:rgba(255,255,255,0.9);letter-spacing:1px;margin-bottom:6px;font-weight:700;">寺地祐太・</span>
+      <span style="display:inline-block;font-size:clamp(40px,8vw,72px);color:#fff;font-weight:900;letter-spacing:2px;text-shadow:4px 4px 0 rgba(0,0,0,0.2);line-height:1;">取扱説明書</span>
+    </h1>
+    <p style="margin:0;font-size:15px;color:rgba(255,255,255,0.9);line-height:1.7;max-width:500px;">3つのAIの知見を統合した、チームメンバーのための完全ガイド</p>
+  </div>
+</div>
+
+<div class="body-grid">
+  <div class="col-left"></div>
+  <div class="col-main">
+    <div id="sec-title"></div>
+    <div id="main-content"></div>
+    <div id="dots" style="display:flex;justify-content:center;gap:8px;margin-top:40px;"></div>
+    <p style="text-align:center;font-size:11px;color:#ccc;margin-top:14px;letter-spacing:2px;">UNIFIED EDITION v3.0 — 2026</p>
+  </div>
+  <div class="col-side">
+    <div style="position:sticky;top:24px;">
+      <p style="font-size:11px;font-weight:800;color:#bbb;letter-spacing:2px;margin-bottom:14px;">CONTENTS</p>
+      <div id="side-nav"></div>
+      <div style="background:#fff;border-radius:14px;padding:16px;border:2px solid #eee;margin-top:4px;">
+        <p style="margin:0 0 8px;font-weight:800;font-size:13px;color:#555;">📌 この資料について</p>
+        <p style="margin:0;font-size:12px;color:#888;line-height:1.7;">Gemini・ChatGPT・Claudeの3AI分析を統合。チームメンバーのための寺地祐太完全攻略版です。</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-right"></div>
+</div>
+
+<div class="bottom-tabs" id="bottom-tabs"></div>
+
+<script>
+var SECS = [
+  {id:"identity",  code:"01", label:"この人とは何者か",       icon:"👤", tagline:"型破りな戦略家×人を育てる天使の虎",   color:"#D4A843"},
+  {id:"strengths", code:"02", label:"搭載されている能力",     icon:"⚡", tagline:"5つの武器とその使い方",                color:"#4ECDC4"},
+  {id:"howto",     code:"03", label:"一緒に働くコツ",         icon:"🎯", tagline:"起動コマンドと禁忌リスト",             color:"#FF6B6B"},
+  {id:"roles",     code:"04", label:"最も輝く場面",           icon:"🌟", tagline:"この人をどう活かすか",                 color:"#88B04B"},
+  {id:"evolution", code:"05", label:"10年間の進化",           icon:"📈", tagline:"過去→現在→あなたへの意味",           color:"#B07EC8"},
+  {id:"emergency", code:"06", label:"緊急時の対応マニュアル", icon:"🚨", tagline:"サインの見方とリカバリー法",           color:"#FF8C42"},
+];
+var active = "identity";
+
+function badge(text,color){
+  return '<span style="display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;color:'+color+';background:'+color+'20;border:1.5px solid '+color+'">'+text+'</span>';
+}
+function tag(text,color,filled){
+  var fg=filled?"#1a1a2e":color, bg=filled?color:color+"18", bd=color+"55";
+  return '<span style="font-size:11px;font-weight:700;color:'+fg+';background:'+bg+';border:1px solid '+bd+';padding:3px 10px;border-radius:20px;display:inline-block">'+text+'</span>';
+}
+function row(label,value){
+  return '<div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #eef0f3;align-items:flex-start">'+
+    '<span style="font-size:13px;color:#aaa;width:108px;flex-shrink:0;padding-top:2px">'+label+'</span>'+
+    '<span style="font-size:14px;color:#333;line-height:1.65;font-weight:500">'+value+'</span></div>';
+}
+function alertBox(color,icon,title,innerHtml){
+  return '<div style="background:'+color+'0d;border:1px solid '+color+'33;border-radius:12px;padding:16px;margin-bottom:14px">'+
+    '<p style="margin:0 0 10px;font-weight:800;color:'+color+';font-size:15px">'+icon+' '+title+'</p>'+innerHtml+'</div>';
+}
+
+var PAGES = {
+  identity: function(){
+    return '<div style="background:linear-gradient(135deg,#1a1a2e,#2d2d4e);border-radius:14px;padding:20px;margin-bottom:24px;text-align:center">'+
+      '<p style="margin:0 0 6px;font-size:10px;letter-spacing:4px;color:#D4A843;font-family:monospace">OFFICIAL DESIGNATION</p>'+
+      '<p style="margin:0;font-size:24px;font-weight:900;color:#fff;line-height:1.3">多次元型カリスマ<br><span style="font-size:15px;font-weight:400;color:#D4A84399">戦略×育成×革命の三位一体</span></p></div>'+
+      '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#D4A843;margin-bottom:12px">■ ひと言で言うと</p>'+
+      '<div style="border-left:3px solid #D4A843;padding-left:16px;margin-bottom:24px">'+
+      '<p style="margin:0;font-size:14px;color:#333;line-height:1.9;font-style:italic">「型破りなアイデアで突破口を開き、チームの可能性を底上げする情熱的な戦略家。<br>表は穏やか、中身はエンジン全開。議論すると厳しいけれど、なぜか元気が出る人。」</p></div>'+
+      '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#D4A843;margin-bottom:12px">■ 基本スペック</p>'+
+      row("思考タイプ","発散型。常に「もっと面白い方法はないか？」と考えている")+
+      row("MBTI","ENTP（討論者）— 既存の枠組みを疑い、議論で世界をアップデートする")+
+      row("動物タイプ","天使のようなトラ — 威風堂々とした外見、根底には深い善意")+
+      row("恋愛OS","デビル天使 — 「掴みどころがないが、なぜか信頼できる」タイプ")+
+      row("燃料","知的刺激・新しい挑戦・人の成長を感じる瞬間")+
+      row("冷却方式","一人で「着想」を練る静かな時間")+
+      '<div style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap">'+
+      ["着想","戦略性","成長促進","ポジティブ","運命思考"].map(function(t){return tag(t,"#D4A843",true);}).join('')+'</div>';
+  },
+
+  strengths: function(){
+    var features = [
+      {icon:"💡",name:"着想エンジン",color:"#D4A843",level:5,desc:"バラバラな情報を瞬時に繋げ、誰も思いつかないアイデアを生成。ブレストの場で最も輝く。問題を「別の角度」で見るのが天才的に得意。"},
+      {icon:"🌱",name:"成長促進システム",color:"#4ECDC4",level:5,desc:"チームメンバーの潜在能力を見抜き、伸ばすことに本質的な喜びを感じる。相手を「一人の人間」として深く尊重し、変化のきっかけを戦略的に提供する。"},
+      {icon:"☀️",name:"ポジティブ放射機",color:"#E8A000",level:4,desc:"場のエネルギーを自動で底上げする特殊機能。停滞した空気を変えるのが得意で、チームが停滞しているときに最も価値を発揮する。"},
+      {icon:"🗺️",name:"戦略マップ生成",color:"#88B04B",level:5,desc:"複雑な状況でも本質を見抜き、最短ルートを提示する。混乱の中から最適解を導き出すパズル解決型の思考。行き詰まったときに頼るべき機能。"},
+      {icon:"🌌",name:"運命思考プロセッサ",color:"#B07EC8",level:4,desc:"プロジェクトや人との出会いに「意味・繋がり」を見出す。チームに方向性と目的意識をもたらし、「なぜこれをやるか」を語らせると最強。"},
+    ];
+    var rows = features.map(function(f){
+      var dots = "●".repeat(f.level)+"○".repeat(5-f.level);
+      return '<div style="display:flex;gap:14px;padding:15px 0;border-bottom:1px solid #f0f0f0">'+
+        '<div style="width:48px;height:48px;border-radius:12px;background:'+f.color+'18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">'+f.icon+'</div>'+
+        '<div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">'+
+        '<p style="margin:0;font-weight:800;color:'+f.color+';font-size:15px">'+f.name+'</p>'+
+        '<span style="font-size:13px;color:'+f.color+'">'+dots+'</span></div>'+
+        '<p style="margin:0;font-size:13px;color:#777;line-height:1.7">'+f.desc+'</p></div></div>';
+    }).join('');
+    return '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4ECDC4;margin-bottom:16px">■ 5つの主要機能（StrengthsFinder）</p>'+rows+
+      '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#4ECDC4;margin-top:24px;margin-bottom:12px">■ 10年間のアップデート履歴</p>'+
+      '<div style="background:#4ECDC40d;border:1px solid #4ECDC433;border-radius:12px;padding:14px">'+
+      '<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">'+
+      '<span style="font-size:12px;color:#888;background:#f0f0f0;padding:3px 10px;border-radius:10px">旧バージョン</span>'+
+      ["個別化","収集心","達成欲"].map(function(t){return tag(t,"#999",false);}).join('')+'</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+      '<span style="font-size:12px;color:#4ECDC4;background:#4ECDC418;padding:3px 10px;border-radius:10px">現バージョン</span>'+
+      ["成長促進","ポジティブ","運命思考"].map(function(t){return tag(t,"#4ECDC4",false);}).join('')+'</div>'+
+      '<p style="margin:10px 0 0;font-size:13px;color:#777;line-height:1.7">「自分が達成する」から「人を育て、チームに意味をもたらす」へ。リーダー・メンター型にシフトしたアップデート済みモデルです。</p></div>';
+  },
+
+  howto: function(){
+    var ok_items = [
+      ["💬","「どう思う？ぶっちゃけ教えて」","議論・対話モードが即起動。本音で向き合うと最高のアウトプットが出る"],
+      ["🧩","「一緒に考えてほしい」","成長促進モードON。全力サポートに切り替わる"],
+      ["🚀","「新しいことやってみたい」","着想エンジンが高回転。止まらなくなるので出口を用意して"],
+      ["🎯","「このプロジェクトの意味を教えて」","運命思考が起動。チームの方向性を言語化してくれる"],
+      ["🌟","「あなたのおかげで助かった」","この一言が最高の充電。翌日のパフォーマンスが上がる"],
+    ];
+    var ng_items = [
+      ["🔄","「とにかくマニュアル通りに」","反論モードに移行。理由を丁寧に説明すると解消する"],
+      ["😑","「前例通りで」「普通でいい」","最もエネルギーを消耗するコマンド。存在意義を問い始める"],
+      ["⏰","細かいルーティン管理の強制","内部エンジンが過負荷。自由度を一定確保してください"],
+      ["🔇","フィードバックなし・無反応","空転が続きモチベーションが静かに低下する"],
+      ["📋","「とにかくこの作業をこなして」","意味を感じられない作業はシステムダウンの引き金"],
+    ];
+    var okHtml = ok_items.map(function(r){
+      return '<div style="padding:9px 0;border-bottom:1px solid rgba(78,205,196,0.15)">'+
+        '<p style="margin:0;font-weight:700;font-size:14px;color:#333">'+r[0]+' '+r[1]+'</p>'+
+        '<p style="margin:4px 0 0;font-size:13px;color:#888">→ '+r[2]+'</p></div>';
+    }).join('');
+    var ngHtml = ng_items.map(function(r){
+      return '<div style="padding:9px 0;border-bottom:1px solid rgba(255,107,107,0.1)">'+
+        '<p style="margin:0;font-weight:700;font-size:14px;color:#333">'+r[0]+' '+r[1]+'</p>'+
+        '<p style="margin:4px 0 0;font-size:13px;color:#888">└ '+r[2]+'</p></div>';
+    }).join('');
+    return alertBox("#4ECDC4","✅","最大パフォーマンスを引き出す起動コマンド",okHtml)+
+      alertBox("#FF6B6B","⚠️","負荷がかかる操作（避けるべきこと）",ngHtml)+
+      '<div style="background:#fffbf0;border:1px solid #D4A84355;border-radius:12px;padding:14px">'+
+      '<p style="margin:0 0 8px;font-weight:800;color:#D4A843;font-size:13px">💡 議論が白熱したときの対処法</p>'+
+      '<p style="margin:0;font-size:14px;color:#666;line-height:1.75">論理で正面から返さず、<strong>「その視点は面白いですね」</strong>とポジティブに受け流すと天使モードに戻ります。デビル側は議論を楽しんでいるだけで、悪意はありません。</p></div>';
+  },
+
+  roles: function(){
+    var scenes = [
+      {scene:"ブレインストーミング・アイデア出し",level:5,color:"#D4A843",desc:"他の追随を許さない爆発力。必ず参加させてください"},
+      {scene:"行き詰まった課題の打開",level:5,color:"#D4A843",desc:"既存の枠を壊して新しい視点を持ち込むのが天職"},
+      {scene:"メンバーの相談・メンタリング",level:5,color:"#4ECDC4",desc:"人の可能性を見抜き、引き出すことに本質的な喜びを感じる"},
+      {scene:"プロジェクトの方向性・戦略議論",level:4,color:"#88B04B",desc:"着想×戦略の組み合わせで最適解を提示"},
+      {scene:"チームのモチベーション維持",level:4,color:"#E8A000",desc:"ポジティブな場づくりと目的の言語化が得意"},
+      {scene:"詳細な実務・ルーティン業務",level:2,color:"#FF6B6B",desc:"意味を理解すれば対応可能。サポート体制を整えて"},
+      {scene:"同じ作業の反復",level:1,color:"#FF6B6B",desc:"要注意。担当から外すか意義を毎回伝える工夫を"},
+    ];
+    var sceneHtml = scenes.map(function(s){
+      var dots = [1,2,3,4,5].map(function(i){
+        return '<div style="width:10px;height:10px;border-radius:2px;background:'+(i<=s.level?s.color:"#eee")+';display:inline-block"></div>';
+      }).join('');
+      return '<div style="margin-bottom:15px">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">'+
+        '<span style="font-size:14px;color:#333;font-weight:600">'+s.scene+'</span>'+
+        '<div style="display:flex;gap:3px">'+dots+'</div></div>'+
+        '<p style="margin:0;font-size:12px;color:#999">'+s.desc+'</p></div>';
+    }).join('');
+    var roles = [{title:"新規事業リーダー",icon:"🚀"},{title:"組織開発・人材育成",icon:"🌱"},{title:"戦略アドバイザー",icon:"🗺️"},{title:"ムードメーカー兼軍師",icon:"⚔️"}];
+    var roleHtml = roles.map(function(r){
+      return '<div style="background:#f8fdf5;border:1px solid #88B04B33;border-radius:10px;padding:14px;text-align:center">'+
+        '<p style="font-size:24px;margin:0 0 6px">'+r.icon+'</p>'+
+        '<p style="margin:0;font-weight:700;font-size:12px;color:#88B04B">'+r.title+'</p></div>';
+    }).join('');
+    return '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#88B04B;margin-bottom:16px">■ 場面別パフォーマンス</p>'+sceneHtml+
+      '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#88B04B;margin-top:24px;margin-bottom:14px">■ 最も輝く役割</p>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+roleHtml+'</div>';
+  },
+
+  evolution: function(){
+    var old_ = ["個別化","着想","収集心","戦略性","達成欲"];
+    var now_ = ["着想","成長促進","ポジティブ","戦略性","運命思考"];
+    var innerHtml = '<p style="margin:0;font-size:14px;color:#555;line-height:1.8">'+
+      '10年前は<strong>「自分が達成する・集める・突き進む」</strong>という自己完結型でした。<br>'+
+      '今は<strong>「人を育てたい・意味を見出したい・みんなで前へ」</strong>という他者・意味志向型に進化しています。<br><br>'+
+      'あなたたち部下の存在は、寺地祐太の<strong>最大のモチベーション源</strong>です。成長を見せること、変化を言語化して伝えることが、この人を最高の状態に保つ方法です。</p>';
+    return '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#B07EC8;margin-bottom:16px">■ 10年間でこう変わった</p>'+
+      '<div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-bottom:24px">'+
+      '<div style="background:#f8f8f8;border-radius:10px;padding:14px"><p style="margin:0 0 10px;font-size:12px;color:#aaa;font-weight:700;letter-spacing:1px">10年前</p>'+
+      old_.map(function(t){return '<p style="margin:5px 0;font-size:13px;color:#888">・'+t+'</p>';}).join('')+'</div>'+
+      '<div style="text-align:center;font-size:22px">→</div>'+
+      '<div style="background:#f5f0ff;border:1px solid #B07EC833;border-radius:10px;padding:14px"><p style="margin:0 0 10px;font-size:12px;color:#B07EC8;font-weight:700;letter-spacing:1px">現在</p>'+
+      now_.map(function(t){return '<p style="margin:5px 0;font-size:13px;color:#B07EC8;font-weight:600">・'+t+'</p>';}).join('')+'</div></div>'+
+      alertBox("#B07EC8","🔍","この変化が意味すること",innerHtml)+
+      '<div style="background:#fffbf0;border:1px solid #D4A84355;border-radius:10px;padding:14px">'+
+      '<p style="margin:0 0 8px;font-weight:800;color:#D4A843;font-size:13px">🌌 運命思考の意味</p>'+
+      '<p style="margin:0;font-size:14px;color:#666;line-height:1.75">「すべての出会いには意味がある」と本気で信じています。あなたがこのチームにいることも、寺地祐太にとっては必然です。その信頼に応えることが、最高のチームケミストリーを生みます。</p></div>';
+  },
+
+  emergency: function(){
+    var signs = [
+      {sign:"🌀 アイデアが止まらない・話が発散する",level:"要注意",color:"#E8A000",action:"「何が一番大事ですか？」と聞く。立ち止まるきっかけを作ってあげる"},
+      {sign:"💬 議論が収束しない・反論が増える",level:"警戒",color:"#FF8C42",action:"論理で返さず感情面に寄り添う。「そう感じるんですね」が効果的"},
+      {sign:"😶 急に静かになる・反応が薄い",level:"危険",color:"#FF6B6B",action:"クールダウン中。深追いせずそっとしておく。翌日声をかける"},
+      {sign:"📚 急に情報収集・調べ物を始める",level:"要確認",color:"#E8A000",action:"意味を探している状態。プロジェクトの目的を再共有してみる"},
+    ];
+    var signsHtml = signs.map(function(s){
+      return '<div style="padding:15px 0;border-bottom:1px solid #f0f0f0">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:8px">'+
+        '<p style="margin:0;font-weight:700;font-size:14px;color:#333;flex:1">'+s.sign+'</p>'+
+        badge(s.level,s.color)+'</div>'+
+        '<p style="margin:0;font-size:13px;color:#888;line-height:1.65">💊 '+s.action+'</p></div>';
+    }).join('');
+    var steps = [
+      ["STEP 1","物理的な休息を与える。無理に話しかけない"],
+      ["STEP 2","「全く別の文脈の新しい問い」を投げかける"],
+      ["STEP 3","「運命的な縁」や「大きなビジョン」の話を振る"],
+      ["STEP 4","「あなたがいてよかった」と具体的なエピソードで伝える"],
+    ];
+    var stepsHtml = steps.map(function(s){
+      return '<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,140,66,0.1)">'+
+        '<span style="font-size:12px;font-weight:800;color:#FF8C42;width:56px;flex-shrink:0">'+s[0]+'</span>'+
+        '<span style="font-size:14px;color:#555">'+s[1]+'</span></div>';
+    }).join('');
+    return '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#FF8C42;margin-bottom:16px">■ 過負荷の警告サイン（早期発見が重要）</p>'+signsHtml+
+      '<p style="font-size:12px;font-weight:800;letter-spacing:2px;color:#FF8C42;margin-top:24px;margin-bottom:14px">■ 完全シャットダウン時のリカバリー手順</p>'+
+      '<div style="background:#fff8f5;border:1px solid #FF8C4233;border-radius:10px;padding:16px">'+stepsHtml+
+      '<p style="margin:12px 0 0;font-size:13px;color:#aaa;font-style:italic">※ 思考のレイヤーが切り替わると、デビル天使の遊び心と共に情熱が急速に再起動します</p></div>';
+  }
+};
+
+function goSec(id){
+  active = id;
+  var s = SECS.find(function(x){return x.id===id;});
+
+  // セクションタイトル
+  document.getElementById('sec-title').innerHTML =
+    '<div style="margin-bottom:24px">'+
+    '<span style="font-size:10px;font-family:monospace;color:'+s.color+';letter-spacing:3px;font-weight:700">SEC.'+s.code+'</span>'+
+    '<h2 style="margin:4px 0;font-size:22px;font-weight:900;color:#222">'+s.label+'</h2>'+
+    '<p style="margin:0;font-size:13px;color:#aaa;font-style:italic">'+s.tagline+'</p>'+
+    '<div style="height:2px;width:36px;background:'+s.color+';margin-top:10px;border-radius:1px"></div></div>';
+
+  // メインコンテンツ
+  var mc = document.getElementById('main-content');
+  mc.className = 'fi';
+  mc.innerHTML = PAGES[id]();
+  void mc.offsetWidth;
+
+  // ドット
+  document.getElementById('dots').innerHTML = SECS.map(function(x){
+    return '<div onclick="goSec(\''+x.id+'\')" style="width:'+(x.id===id?'28px':'8px')+';height:8px;border-radius:4px;background:'+(x.id===id?x.color:'#ddd')+';cursor:pointer;transition:all 0.3s;display:inline-block"></div>';
+  }).join('');
+
+  // サイドナビ
+  var sn = document.getElementById('side-nav');
+  if(sn){
+    sn.innerHTML = SECS.map(function(x){
+      var cur = x.id===id;
+      return '<div class="nav-item" style="border-color:'+(cur?x.color:'#eee')+'" onclick="goSec(\''+x.id+'\')">'+
+        '<div style="display:flex;align-items:center;gap:10px">'+
+        '<div style="width:38px;height:38px;border-radius:10px;background:'+(cur?x.color:'#f5f5f5')+';display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+x.icon+'</div>'+
+        '<div><p style="margin:0;font-size:11px;color:#bbb;font-weight:700">'+x.code+'</p>'+
+        '<p style="margin:0;font-size:13px;font-weight:700;color:'+(cur?x.color:'#333')+'">'+x.label+'</p></div></div>'+
+        '<span style="color:'+(cur?x.color:'#ccc')+';font-size:18px">›</span></div>';
+    }).join('');
+  }
+
+  // ボトムタブ
+  document.getElementById('bottom-tabs').innerHTML = SECS.map(function(x){
+    var cur = x.id===id;
+    return '<button class="tab-btn" style="border-top-color:'+(cur?x.color:'transparent')+'" onclick="goSec(\''+x.id+'\')">'+
+      '<span style="font-size:20px">'+x.icon+'</span>'+
+      '<span style="font-size:9px;font-weight:800;color:'+(cur?x.color:'#bbb')+';letter-spacing:0.3px;white-space:nowrap">'+x.label.slice(0,5)+'</span></button>';
+  }).join('');
+
+  window.scrollTo(0,0);
+}
+
+goSec('identity');
+</script>
+</body>
+</html>
