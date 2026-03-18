@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>寺地祐太・取扱説明書検定</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#FFF8E7;font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif;color:#333;min-height:100vh;}
+button{font-family:inherit;cursor:pointer;border:none;}
+.hero{position:relative;overflow:hidden;padding:36px 24px 32px;text-align:center;}
+.deco{position:absolute;border-radius:50%;pointer-events:none;}
+.container{max-width:560px;margin:0 auto;padding:24px 16px 60px;}
+.card{background:#fff;border-radius:20px;padding:28px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);margin-bottom:16px;}
+.progress-bar{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-bottom:20px;}
+.progress-fill{height:100%;border-radius:3px;transition:width 0.4s ease;}
+.choice{width:100%;padding:14px 16px;border-radius:12px;border:2px solid #eee;background:#fff;text-align:left;font-size:14px;color:#333;margin-bottom:10px;transition:all 0.15s;display:block;line-height:1.5;}
+.choice:hover{border-color:#ddd;background:#fafafa;}
+.choice.correct{border-color:#00A86B!important;background:#EEFFF8!important;color:#00A86B;font-weight:700;}
+.choice.wrong{border-color:#FF4F7B!important;background:#FFF0F4!important;color:#FF4F7B;}
+.choice:disabled{cursor:default;}
+.explanation{border-radius:12px;padding:14px;margin-top:4px;font-size:13px;line-height:1.7;display:none;}
+.explanation.show{display:block;}
+.level-btn{flex:1;padding:16px 8px;border-radius:14px;font-size:14px;font-weight:800;transition:all 0.2s;border:2px solid transparent;}
+.score-circle{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px;border:5px solid;}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fi 0.25s ease;}
+@keyframes pop{0%{transform:scale(0.85);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.pop{animation:pop 0.3s ease;}
+@keyframes unlock{0%{transform:scale(0.5) rotate(-10deg);opacity:0}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.unlock{animation:unlock 0.5s ease;}
+</style>
+</head>
+<body>
+<div id="hero-area"></div>
+<div class="container" id="app"></div>
+<script>
+// ── 問題データ ──────────────────────────────
+var LEVELS = {
+  beginner: {
+    label:"初級", emoji:"🌱", pass:7,
+    color:"#00A86B", bg:"#EEFFF8", grad:"linear-gradient(135deg,#00A86B,#00C87A)",
+    desc:"取扱説明書の基本知識を確認。まずはここから！",
+    rank:["🌱 まだまだこれから","📖 基礎はOK！","⭐ 初級合格！"],
+    questions:[
+      {sec:"この人とは何者か",q:"寺地祐太のMBTIタイプは何？",
+       choices:["INTJ（建築家）","ENTP（討論者）","INFP（仲介者）","ESTJ（幹部）"],correct:1,
+       exp:"ENTPは「討論者」。常に既存の枠組みを疑い、議論で世界をアップデートしようとするタイプです。"},
+      {sec:"この人とは何者か",q:"寺地祐太の「動物占い」のタイプは？",
+       choices:["天使のようなトラ","悪魔のようなタヌキ","孤高のライオン","穏やかなコアラ"],correct:0,
+       exp:"天使のようなトラ。威風堂々とした外見、根底には深い善意という二面性が特徴です。"},
+      {sec:"搭載されている能力",q:"StrengthsFinderで「着想」が意味することは？",
+       choices:["計画を細かく立てる力","バラバラな情報を繋げ新しいアイデアを生む力","人の感情を読む力","数字を正確に処理する力"],correct:1,
+       exp:"着想は「点と点を繋げる天才」。誰も思いつかないアイデアを瞬時に生成します。ブレストの場で最も輝く機能です。"},
+      {sec:"搭載されている能力",q:"現在のStrengthsFinderで入っていない資質はどれ？",
+       choices:["着想","成長促進","達成欲","運命思考"],correct:2,
+       exp:"達成欲は10年前のバージョン。今は「成長促進・ポジティブ・運命思考」に進化しています。"},
+      {sec:"一緒に働くコツ",q:"寺地祐太の最高の充電方法は？",
+       choices:["長い休暇","「あなたのおかげで助かった」という一言","プレゼントをもらう","仕事を減らしてもらう"],correct:1,
+       exp:"「あなたのおかげで助かった」がこの人の最高の充電。翌日のパフォーマンスが上がります。"},
+      {sec:"一緒に働くコツ",q:"寺地祐太が最もエネルギーを消耗するコマンドは？",
+       choices:["「もっと頑張って」","「普通でいい」「前例通りで」","「少し休んでください」","「難しい仕事を任せます」"],correct:1,
+       exp:"「普通でいい」「前例通りで」は存在意義を問い始めさせる最悪のコマンド。絶対に避けましょう。"},
+      {sec:"最も輝く場面",q:"寺地祐太が最もパフォーマンスを発揮する場面は？",
+       choices:["同じ作業の反復","詳細な実務処理","ブレインストーミング","ルーティン業務"],correct:2,
+       exp:"ブレインストーミングは★5評価。他の追随を許さない爆発力を発揮します。必ず参加させましょう。"},
+      {sec:"最も輝く場面",q:"寺地祐太に向いていない役割はどれ？",
+       choices:["新規事業リーダー","組織開発・人材育成","細かいルーティン管理","戦略アドバイザー"],correct:2,
+       exp:"細かいルーティン管理は要注意。意味を感じられない単純作業はシステムダウンの引き金になります。"},
+      {sec:"10年間の進化",q:"10年前にあって今はない資質はどれ？",
+       choices:["着想","戦略性","収集心","成長促進"],correct:2,
+       exp:"「個別化・収集心・達成欲」が旧バージョン。今は人を育て意味を紡ぐ他者志向型に進化しています。"},
+      {sec:"10年間の進化",q:"10年前→現在の変化を一言で表すと？",
+       choices:["「競争心」から「協調性」へ","「自分が達成する」から「人を育てたい」へ","「慎重」から「大胆」へ","「内向き」から「外向き」へ"],correct:1,
+       exp:"自己完結型から他者・意味志向型への進化。あなたたち部下の存在が最大のモチベーション源です。"},
+    ]
+  },
+
+  intermediate: {
+    label:"中級", emoji:"⚡", pass:7,
+    color:"#0077DD", bg:"#EEF6FF", grad:"linear-gradient(135deg,#0077DD,#0099FF)",
+    desc:"取扱説明書の応用知識。実際の場面での対処法を問います。",
+    rank:["💦 もう少し！","📚 惜しい！","⭐⭐ 中級合格！"],
+    questions:[
+      {sec:"一緒に働くコツ",q:"寺地祐太が着想エンジン全開になるキーワードは？",
+       choices:["「急いで」「早く」","「面白い」「別の角度」「もし〜だったら」","「安全に」「確実に」","「みんなそうしてます」"],correct:1,
+       exp:"「面白い」「別の角度」「もし〜だったら」は点火ワード。これを使うと宝の山が出てきます。"},
+      {sec:"一緒に働くコツ",q:"相談するとき「一番いい切り出し方」は？",
+       choices:["「答えを教えてください」","「一緒に考えてほしいんですが」","「これどう思いますか」","「時間あるときで構いません」"],correct:1,
+       exp:"「一緒に考えてほしい」が魔法の言葉。「答えを聞きに来た」より3倍いい反応が返ってきます。"},
+      {sec:"最も輝く場面",q:"寺地祐太の戦略マップ生成機能が最も活きる場面は？",
+       choices:["平和な日常業務","複雑でカオスな状況","シンプルな単純作業","静かなルーティン"],correct:1,
+       exp:"複雑な状況ほど向いています。混乱の中から最適解を導き出すパズル解決型の思考が炸裂します。"},
+      {sec:"緊急時の対応",q:"寺地祐太が「まあいいか」を連発し始めた。これは何のサイン？",
+       choices:["やる気が出てきたサイン","🔴緊急：シャットダウン寸前のサイン","単なる疲れ","良い意味でリラックスしている"],correct:1,
+       exp:"「まあいいか」が口癖になったら🔴緊急サイン。すぐに復活プロトコルを発動してください。"},
+      {sec:"緊急時の対応",q:"シャットダウン初期（PHASE1）の正しい対応は？",
+       choices:["チーム全員で声をかけに行く","「元気出して！」と励ます","余計な相談をせず静かに仕事を続ける","面白い仕事を大量に与える"],correct:2,
+       exp:"PHASE1はまず休ませること。深追いせず淡々と仕事を進めてチームが動いていることを無言で示す。"},
+      {sec:"搭載されている能力",q:"「運命思考」が発動すると何が起きる？",
+       choices:["過去にこだわりすぎる","プロジェクトや出会いに意味・繋がりを見出す","運を信じて計画を立てない","占いに頼るようになる"],correct:1,
+       exp:"運命思考はプロジェクトや人との出会いに「意味・繋がり」を見出す機能。チームに方向性と目的意識をもたらします。"},
+      {sec:"一緒に働くコツ",q:"寺地祐太からアイデアが大量に出てきて収拾がつかない。どうする？",
+       choices:["「もう十分です」と打ち切る","「今日の一番はどれですか？」と絞る","全部メモしてとりあえず感謝する","「難しすぎます」と伝える"],correct:1,
+       exp:"「今日の一番は？」が正解。自分で整理してくれます。全部メモも大事だけど、絞らないと実行できません。"},
+      {sec:"この人とは何者か",q:"寺地祐太の「燃料」として正しいものは？",
+       choices:["お金と地位","知的刺激・新しい挑戦・人の成長","安定と平和","承認と称賛"],correct:1,
+       exp:"知的刺激・新しい挑戦・人の成長が燃料。特に「人の成長を見る瞬間」は最大のモチベーション源です。"},
+      {sec:"10年間の進化",q:"現在の寺地祐太の強みを表す言葉として最も正確なのは？",
+       choices:["自分が突き進む革命家","人を育てチームに意味をもたらすリーダー","データを集める研究者","目標を達成するアスリート"],correct:1,
+       exp:"10年前は「自己完結型」でしたが今は「人を育て意味を紡ぐ他者志向型」。あなたの成長が最大の燃料です。"},
+      {sec:"緊急時の対応",q:"寺地祐太が急に大量の情報収集・調べ物を始めた。これは何のサイン？",
+       choices:["新しいプロジェクトへの意欲","要確認：意味を探している状態","ただの趣味","暇を持て余している"],correct:1,
+       exp:"「意味を探している状態」のサイン。プロジェクトの目的を再共有してあげると解消します。"},
+    ]
+  },
+
+  advanced: {
+    label:"上級", emoji:"🔥", pass:7,
+    color:"#8844DD", bg:"#F5EEFF", grad:"linear-gradient(135deg,#8844DD,#FF4F7B)",
+    desc:"取扱説明書の真髄。ひねった問題で本当の理解度を試します。",
+    rank:["💦 深みがまだある","🎯 惜しい！鋭い！","🏆 真の攻略者！"],
+    questions:[
+      {sec:"応用：議論編",
+       scenario:"会議中、寺地祐太が「そのやり方、本当に正しいの？」と言ってきた。あなたは内心「絶対正しい」と確信している。最も賢い返し方は？",
+       choices:["「はい、正しいです！データがあります」と自信を持って断言する","「面白い視点ですね。一方でこのデータもあって…どう思いますか？」と投げ返す","「おっしゃる通りです」と同意する","「なぜそう思うのか説明してください」と逆に問い詰める"],correct:1,
+       exp:"自分が正しくても正面衝突はNG。「一緒に考えるフレーム」に持ち込むのが正解。最終的にチームの正解を優先する姿勢が評価されます。"},
+      {sec:"応用：褒め方編",
+       scenario:"寺地祐太のアドバイスを実践して成果が出た。しかし寺地祐太は別の案件で少し落ち込んでいる様子。このタイミングで報告するのは正しい？",
+       choices:["落ち込んでいるから報告は後にする","今すぐ報告すべき。これが復活剤になりうる","しばらく様子を見てから判断する","メールで送って直接は言わない"],correct:1,
+       exp:"まさに今が報告のタイミング。「あなたのアドバイスで成果が出た」という報告はシャットダウン復活の最強カードになります。落ち込んでいるときこそ効果大！"},
+      {sec:"応用：活用編",
+       scenario:"寺地祐太に難題を相談したら「もっとシンプルに考えれば？」と意外にあっさりした答えが返ってきた。どう対応するのが正解？",
+       choices:["「そうですね、シンプルにします」と即座に従う","「確かに！でも実はこういう複雑な事情があって…」と問題の深さを再提示する","「それだと解決しません」と反論する","別の人に相談しに行く"],correct:1,
+       exp:"着想エンジンは複雑な問題ほど燃える。問題の深さを再提示すると本気モードに切り替わります。簡単すぎる相談は物足りなそうにしてる笑"},
+      {sec:"応用：シャットダウン編",
+       scenario:"寺地祐太がPHASE2（刺激投入期）。「こんな記事どうですか？」と話題を振ったが「ふーん」と一言だけ返ってきた。次の手は？",
+       choices:["同じ記事について詳しく説明して食いつかせる","諦めてPHASE3の最終兵器を今すぐ使う","別の全く違う文脈の問いを持ち込む","もう少し待ってみる"],correct:2,
+       exp:"一つのネタに固執せず「全然別の話なんですが」で文脈を変えるのが正解。PHASE3はまだ早い。乱発すると効果が薄れます。"},
+      {sec:"応用：深読み編",
+       scenario:"「この人を最大限活用する」という考え方について、寺地祐太本人はどう感じているか？",
+       choices:["自分が利用されているようで不快","むしろ喜んでいる。人の成長に役立つことが最高の喜びだから","特に何も感じない","状況によって違う"],correct:1,
+       exp:"寺地祐太は「人の成長に役立てること」が最高の喜び。積極的に頼られるほど幸せ。遠慮なく活用することが両者にとって最高の関係です。"},
+      {sec:"応用：運命思考編",
+       scenario:"プロジェクトが難航していて寺地祐太のモチベが下がっている。「このプロジェクト意味あるんですかね？」と言い出した。最適な返しは？",
+       choices:["「意味はあります、とにかく頑張りましょう」と精神論で励ます","「正直難しいですよね」と共感する","「このプロジェクトが意味を持つのはこういう理由だと思うんです」と言語化して提示する","「上が決めたことなので」と割り切る"],correct:2,
+       exp:"運命思考スイッチを押す正解。意味・繋がりを言語化して提示すると目が輝き始めます。「すべての出会いには意味がある」と信じている人なので。"},
+      {sec:"応用：矛盾編",
+       scenario:"「議論すると厳しいけどなぜか元気が出る」という矛盾した評価をされるのはなぜか？",
+       choices:["元気を出させるのが下手なだけ","ポジティブ放射機と着想エンジンが同時に動いているから","本人が気づいていないだけ","偶然そう感じる人が多いだけ"],correct:1,
+       exp:"ポジティブ放射機（場のエネルギー底上げ）と着想エンジン（知的刺激）が同時稼働するから。議論で厳しくなりながらも、エネルギーを与える特殊な存在です。"},
+      {sec:"応用：タイミング編",
+       scenario:"寺地祐太に相談したいことがある。最も避けるべきタイミングはいつ？",
+       choices:["朝イチ","ランチ後","「まあいいか」が口癖になっている時","会議前"],correct:2,
+       exp:"「まあいいか」は🔴緊急サイン。このタイミングで相談しても空振りどころかさらに消耗させます。まずPHASE1のリカバリーを優先して。"},
+      {sec:"応用：褒め方の深み",
+       scenario:"寺地祐太に「すごいですね！さすがです！」と言い続けたら、ある日突然反応が薄くなった。原因は？",
+       choices:["飽きてきた","お世辞と判定されてスルーされるようになった","プライベートで何かあった","褒め方が大袈裟すぎた"],correct:1,
+       exp:"中身のない褒め言葉はお世辞と即バレして無効化されます。「変化・成長を言語化した具体的な言葉」だけが刺さります。頻度より中身が命。"},
+      {sec:"応用：総合力",
+       scenario:"新しいチームメンバーが「寺地祐太って難しそう…」と言っている。最も適切なアドバイスは？",
+       choices:["「そうだよ、気をつけて」と同意する","「難しくないよ、ただ普通の上司と同じ接し方をすると空振りするだけ。取扱説明書通りに動かせば最強の味方になるよ」","「特に何も考えなくて大丈夫」","「とにかく従順に従えばいい」"],correct:1,
+       exp:"これが正解。「難しい人」ではなく「取扱説明書が必要な人」。正しく使えば最強の味方になる。それを伝えてあげられるあなたは真の攻略者です🏆"},
+    ]
+  }
+};
+
+var state = {
+  screen: "top", // top / quiz / level-result / final
+  level: null,
+  current: 0,
+  score: 0,
+  answered: false,
+  userAnswers: [],
+  cleared: [],
+};
+
+function renderHero(){
+  var colors = {beginner:"#00A86B", intermediate:"#0077DD", advanced:"#8844DD"};
+  var c = state.level ? colors[state.level] : "#FF4F7B";
+  var grad = state.level ? LEVELS[state.level].grad : "linear-gradient(135deg,#1a1a2e,#2d2d4e)";
+  document.getElementById('hero-area').innerHTML =
+    '<div class="hero" style="background:'+grad+'">'+
+    '<div class="deco" style="width:200px;height:200px;top:-70px;left:-50px;background:rgba(255,255,255,0.08)"></div>'+
+    '<div class="deco" style="width:120px;height:120px;top:-20px;right:-30px;background:rgba(255,255,255,0.08)"></div>'+
+    '<p style="font-size:11px;letter-spacing:4px;color:rgba(255,255,255,0.7);font-weight:700;margin-bottom:8px;">TEAM MEMBER MANUAL</p>'+
+    '<h1 style="font-size:clamp(26px,6vw,44px);font-weight:900;color:#fff;text-shadow:3px 3px 0 rgba(0,0,0,0.15);line-height:1.1;margin-bottom:8px;">寺地祐太<br>取扱説明書検定</h1>'+
+    '<p style="font-size:13px;color:rgba(255,255,255,0.85);">初級・中級・上級｜各10問</p>'+
+    '</div>';
+}
+
+function render(){
+  renderHero();
+  if(state.screen==="top") renderTop();
+  else if(state.screen==="quiz") renderQuestion();
+  else if(state.screen==="level-result") renderLevelResult();
+  else if(state.screen==="final") renderFinal();
+}
+
+function renderTop(){
+  var lvls = ["beginner","intermediate","advanced"];
+  var cards = lvls.map(function(id){
+    var lv = LEVELS[id];
+    var cleared = state.cleared.indexOf(id)>=0;
+    var locked = id==="intermediate" && state.cleared.indexOf("beginner")<0 ||
+                 id==="advanced" && state.cleared.indexOf("intermediate")<0;
+    var btn = locked ?
+      '<button style="width:100%;padding:12px;border-radius:10px;background:#eee;color:#bbb;font-size:14px;font-weight:800;margin-top:12px;">🔒 前のレベルをクリアしてから</button>' :
+      '<button onclick="startLevel(\''+id+'\')" style="width:100%;padding:12px;border-radius:10px;background:'+lv.grad+';color:#fff;font-size:14px;font-weight:800;margin-top:12px;box-shadow:0 3px 12px rgba(0,0,0,0.15);">'+(cleared?'もう一度チャレンジ 🔄':'検定スタート →')+'</button>';
+    return '<div class="card fi" style="border:'+(cleared?'2px solid '+lv.color:'2px solid #eee')+'">'+
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">'+
+      '<div style="width:52px;height:52px;border-radius:14px;background:'+lv.grad+';display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">'+lv.emoji+(cleared?'✅':'')+'</div>'+
+      '<div><p style="font-size:18px;font-weight:900;color:#1a1a1a">'+lv.label+'検定</p>'+
+      '<p style="font-size:12px;color:'+lv.color+';font-weight:700">合格ライン: '+lv.pass+'/10問以上</p></div></div>'+
+      '<p style="font-size:13px;color:#777;line-height:1.65;margin-bottom:4px">'+lv.desc+'</p>'+
+      (id==="advanced"?'<p style="font-size:12px;color:#FF4F7B;font-weight:700;margin-top:4px">⚠️ 取扱説明書通りじゃない問題も出るよ！</p>':'')+
+      btn+'</div>';
+  }).join('');
+
+  var allCleared = state.cleared.indexOf("beginner")>=0 && state.cleared.indexOf("intermediate")>=0 && state.cleared.indexOf("advanced")>=0;
+  var finalMsg = allCleared ? '<div class="card" style="background:linear-gradient(135deg,#1a1a2e,#2d2d4e);text-align:center;padding:24px"><p style="font-size:32px;margin-bottom:8px">🏆</p><p style="font-size:16px;font-weight:900;color:#D4A843;margin-bottom:4px">全レベル制覇！</p><p style="font-size:13px;color:rgba(255,255,255,0.8)">あなたは真の寺地祐太攻略者です</p></div>' : '';
+
+  document.getElementById('app').innerHTML = '<div class="fi">'+cards+finalMsg+'</div>';
+}
+
+function startLevel(id){
+  state.level = id;
+  state.current = 0;
+  state.score = 0;
+  state.answered = false;
+  state.userAnswers = [];
+  state.screen = "quiz";
+  render();
+}
+
+function renderQuestion(){
+  var lv = LEVELS[state.level];
+  var q = lv.questions[state.current];
+  var pct = (state.current/lv.questions.length*100).toFixed(0);
+
+  var topHtml = q.scenario ?
+    '<div style="background:#f8f8f8;border-radius:12px;padding:14px;margin-bottom:18px;font-size:14px;color:#444;line-height:1.7;border-left:3px solid '+lv.color+'">💬 '+q.scenario+'</div>' :
+    '<p style="font-size:16px;font-weight:700;color:#1a1a1a;line-height:1.7;margin-bottom:20px">'+q.q+'</p>';
+
+  var choicesHtml = q.choices.map(function(c,i){
+    return '<button class="choice" onclick="selectAnswer('+i+')" id="c'+i+'">'+
+      '<span style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#f0f0f0;color:#888;font-size:11px;font-weight:800;text-align:center;line-height:24px;margin-right:8px;vertical-align:middle;flex-shrink:0">'+String.fromCharCode(65+i)+'</span>'+c+'</button>';
+  }).join('');
+
+  document.getElementById('app').innerHTML =
+    '<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;background:'+lv.grad+'"></div></div>'+
+    '<div class="card fi">'+
+    '<div style="font-size:11px;font-weight:800;letter-spacing:2px;color:'+lv.color+';margin-bottom:8px">'+lv.emoji+' '+lv.label+'検定 | Q'+(state.current+1)+'/'+lv.questions.length+' — '+q.sec+'</div>'+
+    topHtml+
+    '<div id="choices">'+choicesHtml+'</div>'+
+    '<div class="explanation" id="exp"></div>'+
+    '</div>';
+}
+
+function selectAnswer(idx){
+  if(state.answered) return;
+  state.answered = true;
+  var lv = LEVELS[state.level];
+  var q = lv.questions[state.current];
+  var correct = q.correct;
+  state.userAnswers.push({chosen:idx,correct:correct,sec:q.sec});
+  if(idx===correct) state.score++;
+
+  for(var i=0;i<q.choices.length;i++){
+    var btn = document.getElementById('c'+i);
+    btn.disabled = true;
+    if(i===correct) btn.className='choice correct';
+    else if(i===idx) btn.className='choice wrong';
+  }
+
+  var isOk = idx===correct;
+  var exp = document.getElementById('exp');
+  exp.style.background = isOk?'#EEFFF8':'#FFF0F4';
+  exp.style.border = '1px solid '+(isOk?'#00A86B33':'#FF4F7B33');
+  exp.innerHTML = (isOk?
+    '<p style="font-weight:800;color:#00A86B;font-size:14px;margin-bottom:6px">✅ 正解！</p>':
+    '<p style="font-weight:800;color:#FF4F7B;font-size:14px;margin-bottom:6px">❌ 不正解…</p>')+
+    '<p style="font-size:13px;color:#555;line-height:1.7">'+q.exp+'</p>';
+  exp.className='explanation show pop';
+
+  setTimeout(function(){
+    var isLast = state.current+1 >= lv.questions.length;
+    document.getElementById('choices').insertAdjacentHTML('afterend',
+      '<button onclick="nextQuestion()" style="width:100%;padding:14px;border-radius:12px;background:'+(isOk?lv.color:'#333')+';color:#fff;font-size:15px;font-weight:800;margin-top:16px;">'+(isLast?'結果を見る 🎯':'次の問題へ →')+'</button>'
+    );
+  },300);
+}
+
+function nextQuestion(){
+  state.current++;
+  state.answered=false;
+  window.scrollTo(0,0);
+  var lv = LEVELS[state.level];
+  if(state.current>=lv.questions.length){
+    state.screen="level-result";
+    var passed = state.score>=lv.pass;
+    if(passed && state.cleared.indexOf(state.level)<0) state.cleared.push(state.level);
+  }
+  render();
+}
+
+function renderLevelResult(){
+  var lv = LEVELS[state.level];
+  var pct = Math.round(state.score/lv.questions.length*100);
+  var passed = state.score>=lv.pass;
+  var rankIdx = state.score>=9?2:state.score>=7?1:0;
+  var rank = lv.rank[rankIdx];
+
+  var reviewHtml = state.userAnswers.map(function(a,i){
+    var q = lv.questions[i];
+    var ok = a.chosen===a.correct;
+    return '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0">'+
+      '<span style="font-size:18px;flex-shrink:0">'+(ok?'✅':'❌')+'</span>'+
+      '<div><p style="font-size:12px;color:'+lv.color+';font-weight:700;margin-bottom:2px">'+a.sec+'</p>'+
+      '<p style="font-size:13px;color:#333;line-height:1.5">'+(q.scenario||q.q).slice(0,32)+'…</p>'+
+      (ok?'':'<p style="font-size:12px;color:#FF4F7B;margin-top:3px">正解: '+q.choices[a.correct].slice(0,22)+'…</p>')+
+      '</div></div>';
+  }).join('');
+
+  var nextArea = "";
+  if(passed){
+    if(state.level==="beginner" && state.cleared.indexOf("intermediate")<0)
+      nextArea='<button onclick="startLevel(\'intermediate\')" style="width:100%;padding:14px;border-radius:12px;background:'+LEVELS.intermediate.grad+';color:#fff;font-size:15px;font-weight:800;margin-bottom:10px;">中級検定へ進む ⚡</button>';
+    else if(state.level==="intermediate" && state.cleared.indexOf("advanced")<0)
+      nextArea='<button onclick="startLevel(\'advanced\')" style="width:100%;padding:14px;border-radius:12px;background:'+LEVELS.advanced.grad+';color:#fff;font-size:15px;font-weight:800;margin-bottom:10px;">上級検定へ進む 🔥</button>';
+    else if(state.level==="advanced")
+      nextArea='<div style="background:linear-gradient(135deg,#1a1a2e,#2d2d4e);border-radius:14px;padding:20px;text-align:center;margin-bottom:10px"><p style="font-size:28px;margin-bottom:8px">🏆</p><p style="font-size:15px;font-weight:900;color:#D4A843">全レベル制覇おめでとう！</p><p style="font-size:13px;color:rgba(255,255,255,0.8);margin-top:6px">あなたは真の寺地祐太攻略者です</p></div>';
+  }
+
+  document.getElementById('app').innerHTML =
+    '<div class="card fi" style="text-align:center">'+
+    '<div style="font-size:40px;margin-bottom:12px">'+(passed?lv.emoji+'✅':'💦')+'</div>'+
+    '<div class="score-circle pop" style="border-color:'+lv.color+'">'+
+    '<p style="font-size:32px;font-weight:900;color:'+lv.color+'">'+state.score+'</p>'+
+    '<p style="font-size:12px;color:#aaa;font-weight:700">/ 10問</p></div>'+
+    '<span style="display:inline-block;font-size:13px;font-weight:800;padding:5px 14px;border-radius:20px;color:'+lv.color+';background:'+lv.bg+';border:1.5px solid '+lv.color+';margin-bottom:12px">'+rank+'</span>'+
+    '<p style="font-size:22px;font-weight:900;color:#1a1a1a;margin-bottom:8px">正解率 '+pct+'%</p>'+
+    '<p style="font-size:14px;color:'+lv.color+';font-weight:700;margin-bottom:20px">'+(passed?'🎉 合格！（'+lv.pass+'問以上正解）':'🔄 もう少し！（合格は'+lv.pass+'問以上）')+'</p>'+
+    '<div style="text-align:left;margin-bottom:24px">'+
+    '<p style="font-size:11px;font-weight:800;color:#bbb;letter-spacing:2px;margin-bottom:10px">▼ 問題別結果</p>'+
+    reviewHtml+'</div>'+
+    nextArea+
+    '<button onclick="startLevel(\''+state.level+'\')" style="width:100%;padding:13px;border-radius:12px;background:#333;color:#fff;font-size:14px;font-weight:800;margin-bottom:10px;">もう一度この検定を受ける 🔄</button>'+
+    '<button onclick="backToTop()" style="width:100%;padding:13px;border-radius:12px;background:#f0f0f0;color:#555;font-size:14px;font-weight:800;">トップに戻る</button>'+
+    '</div>';
+}
+
+function backToTop(){
+  state.screen="top"; state.level=null; render();
+}
+
+render();
+</script>
+</body>
+</html>
